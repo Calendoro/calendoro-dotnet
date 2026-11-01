@@ -1,0 +1,10 @@
+node_modules
+dist/
+!packages/*/dist/
+bin/
+obj/
+target/
+__pycache__/
+*.gem
+*.tgz
+*.nupkg

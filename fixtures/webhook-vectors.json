@@ -1,0 +1,155 @@
+[
+  {
+    "name": "valid",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": true
+  },
+  {
+    "name": "valid during secret rotation, second signature",
+    "header": "t=1793016000,v1=933cd960d1d066020bf7747cc6627f857d2489b08ba8983091b92898c431c254,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": true
+  },
+  {
+    "name": "valid during secret rotation, first signature",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8,v1=933cd960d1d066020bf7747cc6627f857d2489b08ba8983091b92898c431c254",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": true
+  },
+  {
+    "name": "uppercase hex",
+    "header": "t=1793016000,v1=6FC754CDCF1E099A68146226129A7E66B8B10279D325426E81151C9B71E30FD8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": true
+  },
+  {
+    "name": "spaces around parts",
+    "header": " t = 1793016000 , v1 = 6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8 ",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": true
+  },
+  {
+    "name": "leading zero timestamp signs the number",
+    "header": "t=01793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": true
+  },
+  {
+    "name": "unknown scheme ignored",
+    "header": "t=1793016000,v0=abc,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": true
+  },
+  {
+    "name": "at the tolerance edge",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016300,
+    "valid": true
+  },
+  {
+    "name": "past the tolerance",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016301,
+    "valid": false
+  },
+  {
+    "name": "from the future past the tolerance",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793015699,
+    "valid": false
+  },
+  {
+    "name": "custom tolerance",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016301,
+    "tolerance": 600,
+    "valid": true
+  },
+  {
+    "name": "wrong secret",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_other",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": false
+  },
+  {
+    "name": "tampered body",
+    "header": "t=1793016000,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}} ",
+    "now": 1793016000,
+    "valid": false
+  },
+  {
+    "name": "no signature",
+    "header": "t=1793016000",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": false
+  },
+  {
+    "name": "no timestamp",
+    "header": "v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": false
+  },
+  {
+    "name": "non-numeric timestamp",
+    "header": "t=soon,v1=6fc754cdcf1e099a68146226129a7e66b8b10279d325426e81151c9b71e30fd8",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": false
+  },
+  {
+    "name": "not hex",
+    "header": "t=1793016000,v1=zz",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": false
+  },
+  {
+    "name": "empty header",
+    "header": "",
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": false
+  },
+  {
+    "name": "missing header",
+    "header": null,
+    "secret": "whsec_test_vector",
+    "body": "{\"id\":\"wev_1\",\"type\":\"booking.created\",\"createdAt\":\"2026-10-26T12:00:00Z\",\"data\":{\"name\":\"Zoë\"}}",
+    "now": 1793016000,
+    "valid": false
+  }
+]

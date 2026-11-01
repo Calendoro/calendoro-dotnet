@@ -1,0 +1,24 @@
+name: Release
+on:
+  push: { tags: ["v*"] }
+permissions: { contents: write, id-token: write, attestations: write }
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: "8.0.x" }
+      - run: grep -q "<Version>${GITHUB_REF_NAME#v}</Version>" src/Calendoro/Calendoro.csproj
+      - run: dotnet run --project tests/Calendoro.Tests
+      - run: dotnet pack src/Calendoro -c Release -o out
+      - uses: actions/attest-build-provenance@v2
+        with: { subject-path: "out/*.nupkg" }
+      - run: gh release create "$GITHUB_REF_NAME" out/*.nupkg --generate-notes --verify-tag
+        env: { GH_TOKEN: "${{ github.token }}" }
+      - id: nuget
+        uses: NuGet/login@v1
+        with: { user: "${{ secrets.NUGET_USER }}" }
+      - run: dotnet nuget push "out/*.nupkg" --api-key "${{ steps.nuget.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json

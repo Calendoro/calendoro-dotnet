@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Calendoro</RootNamespace>
+    <PackageId>Calendoro</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Calendoro contributors</Authors>
+    <Description>.NET client for the Calendoro scheduling API</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Calendoro/calendoro-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Calendoro/calendoro-dotnet</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>
